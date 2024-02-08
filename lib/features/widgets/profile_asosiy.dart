@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:ibaza/assets/icons.dart';
+import 'package:ibaza/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:ibaza/features/profile/presentation/profile.dart';
 import 'package:ibaza/features/widgets/profile.dart';
 
@@ -44,6 +46,8 @@ class _ProfileMainState extends State<ProfileMain> {
                           color: Colors.transparent,
                           border: Border.all(width: 1, color: Colors.grey),
                         ),
+                        width: 64,
+                        height: 64,
                         child: avatar == null
                             ? const Icon(
                                 Icons.person,
@@ -51,16 +55,22 @@ class _ProfileMainState extends State<ProfileMain> {
                                 color: Colors.grey,
                               )
                             : Image.file(
-                                avatar!,
+                                context.watch<ProfileBloc>().state.avatar ==
+                                        null
+                                    ? avatar!
+                                    : context
+                                        .watch<ProfileBloc>()
+                                        .state
+                                        .avatar!,
                                 fit: BoxFit.cover,
                               ),
-                        width: 64,
-                        height: 64,
                       ),
                     ),
                     Gap(10),
                     Text(
-                      "Ziyodullaeyv Mehrojiddin",
+                      context.watch<ProfileBloc>().state.name == null
+                          ? "User"
+                          : context.watch<ProfileBloc>().state.name!.name,
                     ),
                     Gap(90),
                     SvgPicture.asset(AppIcons.right)
